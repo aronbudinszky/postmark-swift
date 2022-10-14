@@ -19,9 +19,33 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-/// Top-level name space for classes and structs in the `PostmarkSwift` package
-public struct PostmarkSwift {
+import Foundation
 
-    // Implementations in separate files
-    
+public extension PostmarkSwift.Client {
+
+    /// Response from sending a single email
+    ///
+    /// See API [documentation](https://postmarkapp.com/developer/user-guide/send-email-with-api/send-a-single-email)
+    struct SendResponse: Decodable, ErrorCodeReceiving {
+        
+        /// The error code
+        ///
+        /// Non-zero value means an error occurred.
+        let ErrorCode: Int
+        
+        /// A readable message regarding the error
+        let Message: String
+        
+        /// The UUID of the message retutrned
+        let MessageID: UUID?
+        
+        /// The time at which the request was submitted
+        let SubmittedAt: Date?
+        
+        /// The sender signature to which this message should go to
+        let To: String?
+        
+    }
+
 }
+

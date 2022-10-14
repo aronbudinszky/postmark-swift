@@ -19,9 +19,30 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-/// Top-level name space for classes and structs in the `PostmarkSwift` package
-public struct PostmarkSwift {
+import Foundation
 
-    // Implementations in separate files
+// MARK: - Definition
+
+/// Defines a response that receives an error code
+protocol ErrorCodeReceiving {
+    
+    /// The error code
+    ///
+    /// Non-zero value means an error occurred.
+    var ErrorCode: Int { get }
+    
+    /// Returns the more descriptive `ErrorCode` enum associated with the current error code
+    var error: PostmarkSwift.Client.ErrorCode { get }
+    
+}
+
+// MARK: - Implementation
+
+/// Implementation
+extension ErrorCodeReceiving {
+    
+    var error: PostmarkSwift.Client.ErrorCode {
+        return PostmarkSwift.Client.ErrorCode(rawValue: self.ErrorCode) ?? .unknown
+    }
     
 }
