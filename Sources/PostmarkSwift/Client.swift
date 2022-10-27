@@ -31,22 +31,36 @@ public extension PostmarkSwift {
     ///         let result = await postmarkClient.send(....)
     ///
     struct Client {
-                
+        
+        // MARK: - Type definitions
+        
+        public enum Error: Swift.Error {
+            case postmarkError(code: ErrorCode, message: String)
+        }
+        
+        
         // MARK: - Properties
         
-        /// The server token
-        let serverToken: String
+        /// The underlying API client
+        private let apiClient: ApiRequestCommunicating
         
         // MARK: - Methods
-        
+
         /// Create a new `Client`
         ///
         /// - Parameter serverToken: The server token to user for the client.
-        init(serverToken: String) {
-            self.serverToken = serverToken
+        public init(serverToken: String) {
+            self.init(apiClient: ApiClient(serverToken: serverToken))
+        }
+
+        /// Create a new `Client` with a custom `APIClient`. Can be used for testing.
+        ///
+        /// - Parameter apiClient: The underlying API Client
+        init(apiClient: ApiRequestCommunicating) {
+            self.apiClient = apiClient
         }
         
-        /// Sends a simple email
+        /// Sends a single email
         ///
         /// - Parameters:
         ///  - from: The sender signature.
@@ -54,11 +68,38 @@ public extension PostmarkSwift {
         ///  - subject: The email's subject.
         ///  - body: The email's body text.
         ///
-        /// - Returns: Returns the result of the send operation.
-        func send(from: String, to: String, subject: String, body: String) {
+        /// - Throws: Throws an error if something failed.
+        /// - Returns: Returns the success data if operation was successful.
+        @discardableResult public func send(_ outgoingEmail: OutgoingEmail) async throws -> OutgoingEmail.Success {
             
-            fatalError("Not yet implemented!")
+            // Create request
+            let sendRequest = SendRequest(
+                From: outgoingEmail.from,
+                To: outgoingEmail.to.joined(separator: ","),
+                Cc: outgoingEmail.cc?.joined(separator: ","),
+                Bcc: outgoingEmail.bcc?.joined(separator: ","),
+                Subject: outgoingEmail.subject,
+                Tag: outgoingEmail.tag,
+                HtmlBody: outgoingEmail.htmlBody,
+                TextBody: outgoingEmail.textBody,
+                ReplyTo: outgoingEmail.replyTo,
+                MetaData: outgoingEmail.metaData,
+                Headers: outgoingEmail.headers,
+                TrackOpens: outgoingEmail.trackOpens,
+                TrackLinks: outgoingEmail.trackLinks
+            )
             
+            // Send request
+            let response = try await self.apiClient.post(sendRequest, to: .email)
+            
+            // Process error if any
+            let errorCode = ErrorCode(rawValue: response.ErrorCode) ?? .unknown
+            guard errorCode == .ok else {
+                throw Error.postmarkError(code: errorCode, message: response.Message)
+            }
+            
+            // Success
+            return OutgoingEmail.Success(messageID: response.MessageID, submittedAt: response.SubmittedAt, to: response.To)
         }
         
     }

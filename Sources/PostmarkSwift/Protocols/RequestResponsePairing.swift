@@ -21,33 +21,9 @@
 
 import Foundation
 
-extension PostmarkSwift.Client {
-
-    /// Response from sending a single email
-    ///
-    /// See API [documentation](https://postmarkapp.com/developer/user-guide/send-email-with-api/send-a-single-email)
-    struct SendResponse: Decodable, ErrorCodeReceiving {
-        
-        /// The error code
-        ///
-        /// Non-zero value means an error occurred.
-        ///
-        /// - Seealso: `ErrorCodes` enum for all possible errors.
-        let ErrorCode: Int
-        
-        /// A readable description about the error
-        let Message: String
-        
-        /// The UUID of the sent message
-        let MessageID: UUID?
-        
-        /// The time at which the request was submitted
-        let SubmittedAt: String?
-        
-        /// The email(s) to which the message was sent
-        let To: String?
-        
-    }
-
+/// A pair of structs, one being the request, other being the response.
+protocol RequestResponsePairing: Encodable {
+    
+    /// The type of the response
+    associatedtype ResponseType: Decodable
 }
-

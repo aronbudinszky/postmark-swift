@@ -21,33 +21,20 @@
 
 import Foundation
 
-extension PostmarkSwift.Client {
-
-    /// Response from sending a single email
+/// Defines the typical functions for API communication
+protocol ApiRequestCommunicating {
+        
+    /// Send a GET network request to an endpoint
     ///
-    /// See API [documentation](https://postmarkapp.com/developer/user-guide/send-email-with-api/send-a-single-email)
-    struct SendResponse: Decodable, ErrorCodeReceiving {
-        
-        /// The error code
-        ///
-        /// Non-zero value means an error occurred.
-        ///
-        /// - Seealso: `ErrorCodes` enum for all possible errors.
-        let ErrorCode: Int
-        
-        /// A readable description about the error
-        let Message: String
-        
-        /// The UUID of the sent message
-        let MessageID: UUID?
-        
-        /// The time at which the request was submitted
-        let SubmittedAt: String?
-        
-        /// The email(s) to which the message was sent
-        let To: String?
-        
-    }
-
+    /// - Parameter object: The request model object
+    /// - Parameter endpoint: The endpoint to connect to
+    /// - Returns: Returns the response model object.
+    func get<RequestObject: RequestResponsePairing, ResponseObject: Decodable>(_ object: RequestObject, to endpoint: PostmarkSwift.Constants.Endpoint) async throws -> ResponseObject where ResponseObject == RequestObject.ResponseType
+    
+    /// Send a POST network request to an endpoint
+    ///
+    /// - Parameter object: The request model object
+    /// - Parameter endpoint: The endpoint to connect to
+    /// - Returns: Returns the response model object.
+    func post<RequestObject: RequestResponsePairing, ResponseObject: Decodable>(_ object: RequestObject, to endpoint: PostmarkSwift.Constants.Endpoint) async throws -> ResponseObject where ResponseObject == RequestObject.ResponseType
 }
-

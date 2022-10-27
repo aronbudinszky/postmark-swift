@@ -21,33 +21,20 @@
 
 import Foundation
 
-extension PostmarkSwift.Client {
+extension PostmarkSwift {
+    
+    /// App constants
+    struct Constants {
+        
+        /// The default base URL for the API
+        static let apiBaseUrl = "https://api.postmarkapp.com/"
+        
+        /// The endpoints
+        enum Endpoint: String {
 
-    /// Response from sending a single email
-    ///
-    /// See API [documentation](https://postmarkapp.com/developer/user-guide/send-email-with-api/send-a-single-email)
-    struct SendResponse: Decodable, ErrorCodeReceiving {
-        
-        /// The error code
-        ///
-        /// Non-zero value means an error occurred.
-        ///
-        /// - Seealso: `ErrorCodes` enum for all possible errors.
-        let ErrorCode: Int
-        
-        /// A readable description about the error
-        let Message: String
-        
-        /// The UUID of the sent message
-        let MessageID: UUID?
-        
-        /// The time at which the request was submitted
-        let SubmittedAt: String?
-        
-        /// The email(s) to which the message was sent
-        let To: String?
+            /// Send an email
+            case email
+        }
         
     }
-
 }
-
