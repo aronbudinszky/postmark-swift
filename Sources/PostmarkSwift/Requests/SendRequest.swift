@@ -26,7 +26,7 @@ extension PostmarkSwift.Client {
     /// Response from sending a single email
     ///
     /// See API [documentation](https://postmarkapp.com/developer/user-guide/send-email-with-api/send-a-single-email)
-    struct SendRequest: Encodable, RequestResponsePairing {
+    struct SendRequest: Codable, RequestResponsePairing {
         
         typealias ResponseType = SendResponse
         
@@ -36,7 +36,7 @@ extension PostmarkSwift.Client {
         public typealias EmailAddress = String
         
         /// An email header
-        public struct EmailHeader: Encodable {
+        public struct EmailHeader: Codable {
             
             /// Name of the header, such as "Message-ID"
             let Name: String
@@ -46,7 +46,7 @@ extension PostmarkSwift.Client {
         }
         
         /// An attached file
-        public struct EmailAttachment: Encodable {
+        public struct EmailAttachment: Codable {
 
             /// The file name
             let Name: String
@@ -66,7 +66,7 @@ extension PostmarkSwift.Client {
         /// Possible settings for tracking links
         ///
         /// Seealso: https://postmarkapp.com/developer/user-guide/tracking-links
-        public enum TrackLinksSetting: String, Encodable {
+        public enum TrackLinksSetting: String, Codable {
             
             /// No links will be replaced or tracked. This is the default setting for all messages and new and existing servers.
             case None

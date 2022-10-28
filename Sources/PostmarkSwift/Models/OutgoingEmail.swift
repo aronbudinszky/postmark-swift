@@ -21,10 +21,10 @@
 
 import Foundation
 
-public extension PostmarkSwift {
+extension PostmarkSwift {
     
     /// Use to create an outgoing email to then `send()` with the client
-    class OutgoingEmail {
+    open class OutgoingEmail: Codable {
         
         // MARK: - Type definitions
         
@@ -42,6 +42,13 @@ public extension PostmarkSwift {
             
             /// The email(s) to which the message was sent
             public let to: String?
+            
+            /// Creates a success
+            public init(messageID: UUID?, submittedAt: String?, to: String?) {
+                self.messageID = messageID
+                self.submittedAt = submittedAt
+                self.to = to
+            }
         }
                         
         // MARK: - Properties
@@ -106,7 +113,7 @@ public extension PostmarkSwift {
         /// Initializer with multiple recipients
         ///
         /// Creates an email with the required fields.
-        public required init(from: EmailAddress, to: [EmailAddress], subject: String, textBody: String, htmlBody: String? = nil) {
+        public init(from: EmailAddress, to: [EmailAddress], subject: String, textBody: String, htmlBody: String? = nil) {
             self.from = from
             self.to = to
             self.subject = subject

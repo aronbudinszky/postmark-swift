@@ -30,7 +30,7 @@ public extension PostmarkSwift {
     ///         let postmarkClient = PostmarkSwift.Client(serverToken: "")
     ///         let result = await postmarkClient.send(....)
     ///
-    struct Client {
+    struct Client: PostmarkClientCompatible {
         
         // MARK: - Type definitions
         
@@ -60,16 +60,6 @@ public extension PostmarkSwift {
             self.apiClient = apiClient
         }
         
-        /// Sends a single email
-        ///
-        /// - Parameters:
-        ///  - from: The sender signature.
-        ///  - to: The recipient's email address.
-        ///  - subject: The email's subject.
-        ///  - body: The email's body text.
-        ///
-        /// - Throws: Throws an error if something failed.
-        /// - Returns: Returns the success data if operation was successful.
         @discardableResult public func send(_ outgoingEmail: OutgoingEmail) async throws -> OutgoingEmail.Success {
             
             // Create request
