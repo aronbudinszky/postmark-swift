@@ -6,9 +6,14 @@ A Swift package that connects to the Postmark API to reliably send emails.
 
 Although a basic email can be sent at this point, a lot of functionality is still being developed. APIs might change.
 
+![Supported platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Faronbudinszky%2Fpostmark-swift%2Fmain%2FDocumentation%2Fplatforms.json)
+![Swift versions](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Faronbudinszky%2Fpostmark-swift%2Fmain%2FDocumentation%2Fswift-versions.json)
+
 ## Add the package
 
-This is a SwiftPM package - add it in your `Package.swift` file or via Xcode as you would any other package (will add more docs on this later :)).
+Only SwiftPM is supported at this time.
+
+To add the package, simply select `File` / `Add Packages...` in Xcode and paste this URL into the search / url box: `https://github.com/aronbudinszky/postmark-swift` .
 
 ## Send your first message
 
